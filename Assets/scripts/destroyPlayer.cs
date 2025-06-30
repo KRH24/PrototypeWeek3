@@ -5,8 +5,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
 {
     private int score = 0;
     public int livesScore = 10;
-
-    public GameObject player;
+    public GameObject[] player;
     public Transform SpawnPoint;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI livesText;
@@ -46,8 +45,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
             }
             else
             {
-                
-                Debug.Log("Game Over");
+
+                Debug.Log("No more lives left"); 
 
             }
         }
@@ -56,11 +55,33 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     void Spawner()
     {
-        
-        GameObject newplayer = Instantiate(player, SpawnPoint.position, Quaternion.identity);
+        if (player == null)
+        {
+            Debug.LogError("Player prefab is not assigned!");
+            return;
+        }
 
+        if (SpawnPoint == null)
+        {
+            Debug.LogError("SpawnPoint is not assigned!");
+            return;
+        }
+
+    if (livesScore > 0 && livesScore <= player.Length)
+    {       
+
+        GameObject newPlayer = Instantiate(player[livesScore], SpawnPoint.position, Quaternion.identity);
+
+        livesText.text = "Spheres: " + livesScore;
     }
+    else
+    {
+        Debug.LogWarning("No more lives or invalid index for spawning");
+    }
+      
+    }
+
+}
     
 
 	
-}
